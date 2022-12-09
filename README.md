@@ -16,3 +16,9 @@
 ##### 1. flake8
 ##### 2. mypy
 ##### 3. pydocstyle
+##### This is what the game menu looks like:
+![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/menu.png)
+##### This is what the level looks like:
+![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/lvl.png)
+##### This is what the skin selection panel looks like:
+![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/scins.png)
