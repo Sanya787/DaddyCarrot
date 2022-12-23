@@ -7,11 +7,10 @@
 ##### 4. Dialogues
 ##### 5. Plot
 ## Dependencies 
-##### 1. ...
-##### 2. PyGame
-##### 3. ...
-##### 4. ...
-##### 5. sqlite3
+##### 1. sys
+##### 2. os
+##### 3. sqlite3
+##### 4. PyGame
 ## Codestyle linters and test frameworks
 ##### 1. flake8
 ##### 2. mypy
