@@ -16,8 +16,10 @@
 ##### 2. mypy
 ##### 3. pydocstyle
 ##### This is what the game menu looks like:
-![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/images/menu.png)
+![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/images/star_menu.png)
 ##### This is what the level looks like:
-![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/images/lvl.png)
-##### This is what the skin selection panel looks like:
-![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/images/scins.png)
+![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/images/game.png)
+##### Screen after defeat:
+![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/images/lose_menu.png)
+##### Level selection:
+![Иллюстрация к проекту](https://github.com/Sanya787/DaddyCarrot/blob/main/images/change_lvl.png)
