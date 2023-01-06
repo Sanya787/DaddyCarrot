@@ -16,4 +16,4 @@
 ##### 2. mypy
 ##### 3. pydocstyle
 ##### Game video:
-![VIDEO](https://github.com/Sanya787/DaddyCarrot/blob/main/video.mov)
+##### The video is very large :( You can watch it [here](https://disk.yandex.ru/i/XO28lVVmDA29kw)
