@@ -1,5 +1,5 @@
 # DaddyCarrot
-##### A game about Daddy Carrot who saves his Children-Carrot
+##### A game about Daddy Carrot who saves his Baby-Carrot
 ## Features
 ##### 1. NPС
 ##### 2. Level system
