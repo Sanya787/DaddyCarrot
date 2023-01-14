@@ -1,7 +1,6 @@
 import os
 import sys
-
-from dialogs import all_dialogs
+import json
 import sqlite3
 import pygame
 
@@ -95,8 +94,8 @@ class Manager:
 
 
 def create_groups():
-    global all_sprites, tiles_group, dead_group,\
-        player_group, pay_group, finish_group,\
+    global all_sprites, tiles_group, dead_group, \
+        player_group, pay_group, finish_group, \
         blobs_group, key_group, blocks_key_group
     all_sprites = pygame.sprite.Group()
     tiles_group = pygame.sprite.Group()
@@ -112,11 +111,10 @@ def create_groups():
 class Finish(pygame.sprite.Sprite):
     # ------- Создать монетку ------- #
     def __init__(self, image, pos_x, pos_y):
-
         super().__init__(finish_group, all_sprites)
 
         self.image = image
-        self.image = pygame.transform.scale(self.image, (40, 50))
+        # self.image = pygame.transform.scale(self.image, (40, 50))
         self.rect = self.image.get_rect().move(
             tile_size * pos_x, tile_size * pos_y)
 
@@ -148,7 +146,6 @@ class KeyBlock(pygame.sprite.Sprite):
 class Money(pygame.sprite.Sprite):
     # ------- Создать монетку ------- #
     def __init__(self, image, pos_x, pos_y):
-
         super().__init__(pay_group, all_sprites)
 
         self.image = image
@@ -184,7 +181,6 @@ class Blob(pygame.sprite.Sprite):
 class Lava(pygame.sprite.Sprite):
     # ------- Создать монетку ------- #
     def __init__(self, image, pos_x, pos_y):
-
         super().__init__(dead_group, all_sprites)
 
         self.image = image
@@ -196,7 +192,6 @@ class Lava(pygame.sprite.Sprite):
 class Tile(pygame.sprite.Sprite):
     # ------- Создать блок------- #
     def __init__(self, image, pos_x, pos_y):
-
         super().__init__(tiles_group, all_sprites)
 
         self.image = image
@@ -206,7 +201,6 @@ class Tile(pygame.sprite.Sprite):
 
 
 class Carrot(pygame.sprite.Sprite):
-
     speed = 4
 
     def __init__(self, x, y):
@@ -353,7 +347,7 @@ class Carrot(pygame.sprite.Sprite):
                 query = f'''
                 SELECT levels FROM info'''
 
-                LEVEL = 1
+                LEVEL += 1
 
                 cursor.execute(query)
                 connection.commit()
@@ -443,7 +437,6 @@ class ChangeLevelMenu:
 
 class InfoMenu:
     def __init__(self):
-
         manager = Manager()
         self.sound_click = manager.get_sound('button.wav')
         self.image = manager.load_image('info.png')
@@ -536,7 +529,6 @@ class ChangeSkinMenu:
                     money = cursor.fetchall()[0][0]
 
                     if money >= 65:
-
                         query = f'''UPDATE info SET Money={money - 65}'''
                         cursor.execute(query)
                         connection.commit()
@@ -585,7 +577,7 @@ class World:
         dirt_img = manager.load_image('dirt.png')
         lava_img = manager.load_image('lava.png')
         grass_img = manager.load_image('grass.png')
-        finish_img = manager.load_image('checkpoint.png')
+        finish_img = manager.load_image('little_carrot.png')
 
         # ------- Сгенерировать уровень по карте (data) ------- #
         row_count = 0
@@ -626,7 +618,10 @@ class World:
 
                 self.carrot.index_dialog += 1
 
-                if self.carrot.index_dialog == len(all_dialogs[LEVEL - 1]):
+                with open('dialogs.json') as f:
+                    templates = json.load(f)
+                    dialogs = templates[f'level{LEVEL}']
+                if self.carrot.index_dialog == len(dialogs):
 
                     create_groups()
 
@@ -703,10 +698,13 @@ class World:
         if self.carrot.dialog:
             if self.carrot.index_dialog % 2 == 0:
 
-                text = all_dialogs[LEVEL - 1][self.carrot.index_dialog]
+                with open('dialogs.json') as f:
+                    templates = json.load(f)
+                    text = templates[f'level{LEVEL}'][self.carrot.index_dialog]
+
                 screen.blit(manager.load_image('dialog_1.png'), (0, 500))
 
-                if type(text) == tuple:
+                if type(text) == list:
 
                     index = 0
                     for elem in text:
@@ -721,9 +719,12 @@ class World:
                     screen.blit(text, (0, 515))
             else:
 
-                text = all_dialogs[LEVEL - 1][self.carrot.index_dialog]
+                with open('dialogs.json') as f:
+                    templates = json.load(f)
+                    text = templates[f'level{LEVEL}'][self.carrot.index_dialog]
+
                 screen.blit(manager.load_image('dialog_2.png'), (0, 500))
-                if type(text) == tuple:
+                if type(text) == list:
 
                     index = 0
                     for elem in text:
@@ -864,4 +865,3 @@ def main():
 if __name__ == '__main__':
     main()
     pygame.quit()
-    
