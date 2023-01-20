@@ -580,9 +580,9 @@ class World:
         finish_img = manager.load_image('little_carrot.png')
 
         # ------- Сгенерировать уровень по карте (data) ------- #
-        row_count = 0
+        row_count = -1
         for row in data:
-            col_count = 0
+            col_count = -1
             for tile in row:
                 tile = int(tile)
                 if tile == 1:
@@ -677,9 +677,11 @@ class World:
         self.carrot.update()
 
     def draw(self):
+        global PAUSE
         manager = Manager()
         # ------- Нарисовать уровень ------- #
-        blobs_group.update()
+        if not PAUSE:
+            blobs_group.update()
 
         all_sprites.draw(screen)
 
