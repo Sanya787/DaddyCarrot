@@ -636,7 +636,7 @@ class World:
                 self.carrot.dead = False
 
                 create_groups()
-                room = World(manager.load_level('first_level.txt'))
+                room = World(manager.load_level(manager.base_of_levels[LEVEL]))
 
                 self.sound_click.play()
 
