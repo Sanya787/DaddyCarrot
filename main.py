@@ -745,7 +745,7 @@ class World:
 
                 self.carrot.index_dialog += 1
 
-                with open('dialogs.json') as f:
+                with open('dialogs.json', mode='r', encoding='utf-8') as f:
                     templates = json.load(f)
                     dialogs = templates[f'level{LEVEL}']
                 if self.carrot.index_dialog == len(dialogs):
@@ -834,7 +834,7 @@ class World:
         if self.carrot.dialog:
             if self.carrot.index_dialog % 2 == 0:
 
-                with open('dialogs.json') as f:
+                with open('dialogs.json', mode='r', encoding='utf-8') as f:
                     templates = json.load(f)
                     text = templates[f'level{LEVEL}'][self.carrot.index_dialog]
 
@@ -855,7 +855,7 @@ class World:
                     screen.blit(text, (0, 515))
             else:
 
-                with open('dialogs.json') as f:
+                with open('dialogs.json', mode='r', encoding='utf-8') as f:
                     templates = json.load(f)
                     text = templates[f'level{LEVEL}'][self.carrot.index_dialog]
 
