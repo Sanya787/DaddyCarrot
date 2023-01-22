@@ -16,5 +16,7 @@
 ##### 1. flake8
 ##### 2. mypy
 ##### 3. pydocstyle
+## How classes are arranged
+![Диаграмма классов](https://github.com/Sanya787/DaddyCarrot/blob/main/class_d.jpeg)
 ##### Game video:
 ##### The video is very large :( You can watch it [here](https://disk.yandex.ru/i/XO28lVVmDA29kw)
