@@ -1,3 +1,7 @@
+#!/usr/bin/env python3
+# -*- coding: UTF-8 -*-
+
+"""This is a python game."""
 import os
 import sys
 import json
@@ -6,52 +10,78 @@ import pygame
 
 
 class Manager:
+    """Game resource management."""
+
     _singleton = None
 
     def __init__(self):
-
+        """Object creation."""
         self.base_of_levels = [
             'first_level.txt',
             'second_level.txt',
             'third_level.txt',
+            'fourth_level.txt',
+            'fifth_level.txt',
+
         ]
         self.carrot_left = [
-            pygame.transform.scale(self.load_image('carrot_left_1.png'), player_size),
-            pygame.transform.scale(self.load_image('carrot_left_2.png'), player_size),
-            pygame.transform.scale(self.load_image('carrot_left_3.png'), player_size),
-            pygame.transform.scale(self.load_image('carrot_left_4.png'), player_size),
-            pygame.transform.scale(self.load_image('carrot_left_5.png'), player_size)
+            pygame.transform.scale(self.load_image('carrot_left_1.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('carrot_left_2.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('carrot_left_3.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('carrot_left_4.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('carrot_left_5.png'),
+                                   player_size)
         ]
         self.carrot_right = [
-            pygame.transform.scale(self.load_image('carrot_right_1.png'), player_size),
-            pygame.transform.scale(self.load_image('carrot_right_2.png'), player_size),
-            pygame.transform.scale(self.load_image('carrot_right_3.png'), player_size),
-            pygame.transform.scale(self.load_image('carrot_right_4.png'), player_size),
-            pygame.transform.scale(self.load_image('carrot_right_5.png'), player_size)
+            pygame.transform.scale(self.load_image('carrot_right_1.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('carrot_right_2.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('carrot_right_3.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('carrot_right_4.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('carrot_right_5.png'),
+                                   player_size)
         ]
         self.cool_carrot_left = [
-            pygame.transform.scale(self.load_image('cool_carrot_left_1.png'), player_size),
-            pygame.transform.scale(self.load_image('cool_carrot_left_2.png'), player_size),
-            pygame.transform.scale(self.load_image('cool_carrot_left_3.png'), player_size),
-            pygame.transform.scale(self.load_image('cool_carrot_left_4.png'), player_size),
-            pygame.transform.scale(self.load_image('cool_carrot_left_5.png'), player_size)
+            pygame.transform.scale(self.load_image('cool_carrot_left_1.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('cool_carrot_left_2.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('cool_carrot_left_3.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('cool_carrot_left_4.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('cool_carrot_left_5.png'),
+                                   player_size)
         ]
         self.cool_carrot_right = [
-            pygame.transform.scale(self.load_image('cool_carrot_right_1.png'), player_size),
-            pygame.transform.scale(self.load_image('cool_carrot_right_2.png'), player_size),
-            pygame.transform.scale(self.load_image('cool_carrot_right_3.png'), player_size),
-            pygame.transform.scale(self.load_image('cool_carrot_right_4.png'), player_size),
-            pygame.transform.scale(self.load_image('cool_carrot_right_5.png'), player_size)
+            pygame.transform.scale(self.load_image('cool_carrot_right_1.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('cool_carrot_right_2.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('cool_carrot_right_3.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('cool_carrot_right_4.png'),
+                                   player_size),
+            pygame.transform.scale(self.load_image('cool_carrot_right_5.png'),
+                                   player_size)
         ]
 
     def __new__(cls):
+        """Give the old one instead of a new instance."""
         if cls._singleton is None:
             cls._singleton = super(Manager, cls).__new__(cls)
 
         return cls._singleton
 
     def load_image(self, filename, colorkey=None):
-        # ------- Загрузка изображения ------- #
+        """Load an image."""
         path = os.path.join('images', filename)
 
         if not os.path.isfile(path):
@@ -71,15 +101,17 @@ class Manager:
         return image
 
     def get_sound(self, filename):
+        """Load sound."""
         return pygame.mixer.Sound(f'sound/{filename}')
 
     def load_level(self, filename):
+        """Load level."""
         filename = "data/" + filename
-        # читаем уровень, убирая символы перевода строки
         with open(filename, 'r') as mapFile:
             return [line.strip() for line in mapFile]
 
     def take_image(self, index, see_right_true):
+        """Return the next frame of the carrot."""
         global SKIN
         if SKIN == 'cool_carrot':
             if see_right_true:
@@ -94,6 +126,7 @@ class Manager:
 
 
 def create_groups():
+    """Create groups of sprites."""
     global all_sprites, tiles_group, dead_group, \
         player_group, pay_group, finish_group, \
         blobs_group, key_group, blocks_key_group
@@ -109,19 +142,22 @@ def create_groups():
 
 
 class Finish(pygame.sprite.Sprite):
-    # ------- Создать монетку ------- #
+    """Finish Sprite."""
+
     def __init__(self, image, pos_x, pos_y):
+        """Object creation."""
         super().__init__(finish_group, all_sprites)
 
         self.image = image
-        # self.image = pygame.transform.scale(self.image, (40, 50))
         self.rect = self.image.get_rect().move(
             tile_size * pos_x, tile_size * pos_y)
 
 
 class Key(pygame.sprite.Sprite):
-    # ------- Создать монетку ------- #
+    """Key Sprite."""
+
     def __init__(self, pos_x, pos_y):
+        """Object creation."""
         manager = Manager()
 
         super().__init__(key_group, all_sprites)
@@ -132,8 +168,10 @@ class Key(pygame.sprite.Sprite):
 
 
 class KeyBlock(pygame.sprite.Sprite):
-    # ------- Создать монетку ------- #
+    """KeyBlock Sprite."""
+
     def __init__(self, pos_x, pos_y):
+        """Object creation."""
         manager = Manager()
 
         super().__init__(tiles_group, blocks_key_group, all_sprites)
@@ -144,8 +182,10 @@ class KeyBlock(pygame.sprite.Sprite):
 
 
 class Money(pygame.sprite.Sprite):
-    # ------- Создать монетку ------- #
+    """Money Sprite."""
+
     def __init__(self, image, pos_x, pos_y):
+        """Object creation."""
         super().__init__(pay_group, all_sprites)
 
         self.image = image
@@ -155,8 +195,10 @@ class Money(pygame.sprite.Sprite):
 
 
 class Blob(pygame.sprite.Sprite):
-    # ------- Создать монетку ------- #
+    """Blob Sprite."""
+
     def __init__(self, pos_x, pos_y):
+        """Object creation."""
         manager = Manager()
 
         super().__init__(blobs_group, all_sprites, dead_group)
@@ -169,6 +211,7 @@ class Blob(pygame.sprite.Sprite):
             tile_size * pos_x, tile_size * pos_y)
 
     def update(self):
+        """Move the blob."""
         self.count_step += 1
 
         if self.count_step > 100:
@@ -179,8 +222,10 @@ class Blob(pygame.sprite.Sprite):
 
 
 class Lava(pygame.sprite.Sprite):
-    # ------- Создать монетку ------- #
+    """Lava Sprite."""
+
     def __init__(self, image, pos_x, pos_y):
+        """Object creation."""
         super().__init__(dead_group, all_sprites)
 
         self.image = image
@@ -190,8 +235,10 @@ class Lava(pygame.sprite.Sprite):
 
 
 class Tile(pygame.sprite.Sprite):
-    # ------- Создать блок------- #
+    """Tile Sprite."""
+
     def __init__(self, image, pos_x, pos_y):
+        """Object creation."""
         super().__init__(tiles_group, all_sprites)
 
         self.image = image
@@ -201,9 +248,12 @@ class Tile(pygame.sprite.Sprite):
 
 
 class Carrot(pygame.sprite.Sprite):
+    """Player Sprite."""
+
     speed = 4
 
     def __init__(self, x, y):
+        """Object creation."""
         manager = Manager()
         super().__init__(player_group, all_sprites)
 
@@ -236,10 +286,11 @@ class Carrot(pygame.sprite.Sprite):
         self.rect.y = y
 
     def draw(self):
-        # ------- Рисовать игрока ------- #
+        """Draw player."""
         screen.blit(self.image, (self.rect.x, self.rect.y))
 
     def update(self):
+        """Handle event."""
         global PAUSE, LEVEL
 
         cooldown = 4
@@ -314,7 +365,8 @@ class Carrot(pygame.sprite.Sprite):
 
                     if pygame.Rect.colliderect(elem.rect, self.rect):
                         room.money_up += 1
-                        room.text = room.font.render(str(room.money_up), True, (255, 255, 255))
+                        room.text = room.font.render(str(room.money_up), True,
+                                                     (255, 255, 255))
                         elem.kill()
 
             if pygame.sprite.spritecollideany(self, key_group):
@@ -335,17 +387,14 @@ class Carrot(pygame.sprite.Sprite):
 
                 connection = sqlite3.connect('Progress.db')
                 cursor = connection.cursor()
-                query = f'''
-                    SELECT Money FROM info'''
+                query = '''SELECT Money FROM info'''
                 cursor.execute(query)
                 connection.commit()
                 cash = cursor.fetchall()[0][0] + room.money_up
-                query = f'''
-                UPDATE info SET Money={cash}'''
+                query = f'''UPDATE info SET Money={cash}'''
                 cursor.execute(query)
                 connection.commit()
-                query = f'''
-                SELECT levels FROM info'''
+                query = '''SELECT levels FROM info'''
 
                 LEVEL += 1
 
@@ -366,55 +415,80 @@ class Carrot(pygame.sprite.Sprite):
             if pygame.sprite.spritecollideany(self, dead_group):
 
                 if self.see_right:
-                    self.image = pygame.transform.scale(self.load_image('dead_carrot_right.png'), player_size)
+                    self.image = pygame.transform.scale(
+                        self.load_image('dead_carrot_right.png'), player_size)
 
                 else:
-                    self.image = pygame.transform.scale(self.load_image('dead_carrot.png'), player_size)
+                    self.image = pygame.transform.scale(
+                        self.load_image('dead_carrot.png'), player_size)
 
                 self.sound_dead.play()
                 self.dead = True
 
 
 class ChangeLevelMenu:
-    def __init__(self):
+    """Level selection window class."""
 
+    def __init__(self):
+        """Object creation."""
         manager = Manager()
 
         self.sound_click = manager.get_sound('button.wav')
         self.levels = [1]
 
     def update(self, event):
+        """Handle event."""
         global room, LEVEL
 
         manager = Manager()
 
-        if event.type == pygame.MOUSEBUTTONUP and 5 < event.pos[0] < 55 and 5 < event.pos[1] < 55:
+        if (event.type == pygame.MOUSEBUTTONUP
+                and 5 < event.pos[0] < 55 and 5 < event.pos[1] < 55):
             room = Menu()
             self.sound_click.play()
 
             create_groups()
 
-        elif event.type == pygame.MOUSEBUTTONUP and 225 < event.pos[0] < 315 and 242 < event.pos[1] < 332:
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 225 < event.pos[0] < 315 and 242 < event.pos[1] < 332):
             room = World(manager.load_level('first_level.txt'))
             self.sound_click.play()
             LEVEL = 0
 
-        elif event.type == pygame.MOUSEBUTTONUP and 340 < event.pos[0] < 430 and 242 < event.pos[1] < 332:
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 340 < event.pos[0] < 430 and 242 < event.pos[1] < 332):
             if 2 in self.levels:
                 self.sound_click.play()
                 room = World(manager.load_level('second_level.txt'))
                 LEVEL = 1
 
-        elif event.type == pygame.MOUSEBUTTONUP and 455 < event.pos[0] < 535 and 242 < event.pos[1] < 332:
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 455 < event.pos[0] < 535 and 242 < event.pos[1] < 332):
             if 3 in self.levels:
                 self.sound_click.play()
                 room = World(manager.load_level('third_level.txt'))
                 LEVEL = 2
 
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 570 < event.pos[0] < 640 and 242 < event.pos[1] < 332):
+            if 4 in self.levels:
+                self.sound_click.play()
+                room = World(manager.load_level('fourth_level.txt'))
+                LEVEL = 3
+
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 685 < event.pos[0] < 745 and 242 < event.pos[1] < 332):
+            if 5 in self.levels:
+                self.sound_click.play()
+                room = World(manager.load_level('fifth_level.txt'))
+                LEVEL = 4
+
     def draw(self):
+        """Draw window."""
         manager = Manager()
 
-        screen.blit(pygame.transform.scale(manager.load_image('back.png'), (50, 50)), (5, 5))
+        screen.blit(pygame.transform.scale(manager.load_image('back.png'),
+                                           (50, 50)), (5, 5))
 
         coord_x = [
             225, 340, 455, 570, 685
@@ -428,32 +502,45 @@ class ChangeLevelMenu:
             for j in range(5):
                 lvl_number = i * 5 + j + 1
                 if lvl_number in self.levels:
-                    screen.blit(pygame.transform.scale(manager.load_image(f'lvl{i * 5 + j + 1}.png'), (90, 90)),
-                                (coord_x[j], coord_y[i]))
+                    screen.blit(pygame.transform.scale(
+                        manager.load_image(f'lvl{i * 5 + j + 1}.png'),
+                        (90, 90)),
+                        (coord_x[j], coord_y[i]))
                 else:
-                    screen.blit(pygame.transform.scale(manager.load_image(f'close_lvl.png'), (90, 90)),
-                                (coord_x[j], coord_y[i]))
+                    screen.blit(pygame.transform.scale(
+                        manager.load_image('close_lvl.png'),
+                        (90, 90)),
+                        (coord_x[j], coord_y[i]))
 
 
 class InfoMenu:
+    """Information window class."""
+
     def __init__(self):
+        """Object creation."""
         manager = Manager()
         self.sound_click = manager.get_sound('button.wav')
         self.image = manager.load_image('info.png')
 
     def update(self, event):
+        """Handle event."""
         global room
 
-        if event.type == pygame.MOUSEBUTTONUP and 2 < event.pos[0] < 52 and 2 < event.pos[1] < 52:
+        if (event.type == pygame.MOUSEBUTTONUP
+                and 2 < event.pos[0] < 52 and 2 < event.pos[1] < 52):
             room = Menu()
             self.sound_click.play()
 
     def draw(self):
+        """Draw window."""
         screen.blit(self.image, (0, 0))
 
 
 class ChangeSkinMenu:
+    """Skin selection window class."""
+
     def __init__(self):
+        """Object creation."""
         manager = Manager()
 
         self.sail = 0
@@ -464,24 +551,27 @@ class ChangeSkinMenu:
         self.list = ['carrot_right_1.png', 'cool_carrot_right_1.png']
 
     def update(self, event):
+        """Handle event."""
         global room, SKIN
 
         connection = sqlite3.connect('Progress.db')
         cursor = connection.cursor()
-        query = f'''SELECT cool_carrot FROM info'''
+        query = '''SELECT cool_carrot FROM info'''
         cursor.execute(query)
 
         self.res = cursor.fetchall()[0][0]
         connection.commit()
         connection.close()
 
-        if event.type == pygame.MOUSEBUTTONUP and 5 < event.pos[0] < 55 and 5 < event.pos[1] < 55:
+        if (event.type == pygame.MOUSEBUTTONUP
+                and 5 < event.pos[0] < 55 and 5 < event.pos[1] < 55):
             room = Menu()
             self.sound_click.play()
 
             create_groups()
 
-        elif event.type == pygame.MOUSEBUTTONUP and 700 < event.pos[0] < 750 and 350 < event.pos[1] < 400:
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 700 < event.pos[0] < 750 and 350 < event.pos[1] < 400):
 
             self.sound_click.play()
 
@@ -492,7 +582,8 @@ class ChangeSkinMenu:
 
             self.button_select = False
 
-        elif event.type == pygame.MOUSEBUTTONUP and 300 < event.pos[0] < 350 and 350 < event.pos[1] < 400:
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 300 < event.pos[0] < 350 and 350 < event.pos[1] < 400):
 
             self.sound_click.play()
 
@@ -503,7 +594,8 @@ class ChangeSkinMenu:
 
             self.button_select = False
 
-        elif event.type == pygame.MOUSEBUTTONUP and 380 < event.pos[0] < 680 and 500 < event.pos[1] < 600:
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 380 < event.pos[0] < 680 and 500 < event.pos[1] < 600):
 
             self.sound_click.play()
 
@@ -521,8 +613,7 @@ class ChangeSkinMenu:
                 else:
                     connection = sqlite3.connect('Progress.db')
                     cursor = connection.cursor()
-                    query = f'''
-                        SELECT Money FROM info'''
+                    query = '''SELECT Money FROM info'''
                     cursor.execute(query)
                     connection.commit()
 
@@ -533,7 +624,7 @@ class ChangeSkinMenu:
                         cursor.execute(query)
                         connection.commit()
 
-                        query = f'''UPDATE info SET cool_carrot="True"'''
+                        query = '''UPDATE info SET cool_carrot="True"'''
                         cursor.execute(query)
                         connection.commit()
 
@@ -543,26 +634,38 @@ class ChangeSkinMenu:
                     connection.close()
 
     def draw(self):
+        """Draw window."""
         manager = Manager()
 
         screen.blit(manager.load_image('shop_title.png'), (30, 0))
-        screen.blit(pygame.transform.scale(manager.load_image('back.png'), (50, 50)), (5, 5))
-        screen.blit(pygame.transform.scale(manager.load_image('step_left.png'), (50, 50)), (300, 350))
-        screen.blit(pygame.transform.scale(manager.load_image('step_right.png'), (50, 50)), (700, 350))
-        screen.blit(pygame.transform.scale(manager.load_image(self.list[self.index]), (200, 288)), (400, 206))
+        screen.blit(pygame.transform.scale(
+            manager.load_image('back.png'), (50, 50)), (5, 5))
+        screen.blit(pygame.transform.scale(
+            manager.load_image('step_left.png'), (50, 50)), (300, 350))
+        screen.blit(pygame.transform.scale(
+            manager.load_image('step_right.png'), (50, 50)), (700, 350))
+        screen.blit(pygame.transform.scale(
+            manager.load_image(self.list[self.index]), (200, 288)), (400, 206))
 
-        if self.list[self.index] == 'cool_carrot_right_1.png' and self.res == 'False':
-            screen.blit(manager.load_image('button_pay_cool.png'), (380, 500))
+        if (self.list[self.index] == 'cool_carrot_right_1.png'
+                and self.res == 'False'):
+            screen.blit(manager.load_image('button_pay_cool.png'),
+                        (380, 500))
         else:
             if self.button_select:
-                screen.blit(manager.load_image('select_button.png'), (380, 500))
+                screen.blit(manager.load_image('select_button.png'),
+                            (380, 500))
 
             else:
-                screen.blit(manager.load_image('button_scin.png'), (380, 500))
+                screen.blit(manager.load_image('button_skin.png'),
+                            (380, 500))
 
 
 class World:
+    """World window class."""
+
     def __init__(self, data):
+        """Object creation."""
         manager = Manager()
 
         self.money_up = 0
@@ -572,7 +675,8 @@ class World:
         self.money_img = manager.load_image('money.png')
         self.sound_click = manager.get_sound('button.wav')
         self.text = self.font.render("0", True, (255, 255, 255))
-        self.back_button = pygame.transform.scale(manager.load_image('back.png'), (50, 50))
+        self.back_button = pygame.transform.scale(
+            manager.load_image('back.png'), (50, 50))
 
         dirt_img = manager.load_image('dirt.png')
         lava_img = manager.load_image('lava.png')
@@ -596,7 +700,9 @@ class World:
                 elif tile == 4:
                     Finish(finish_img, col_count, row_count)
                 elif tile == 5:
-                    self.carrot = Carrot(col_count * tile_size, row_count * tile_size)
+                    self.carrot = Carrot(
+                        col_count * tile_size, row_count * tile_size
+                    )
                 elif tile == 6:
                     Lava(lava_img, col_count, row_count)
                 elif tile == 7:
@@ -609,8 +715,8 @@ class World:
             row_count += 1
 
     def update(self, event):
+        """Handle event."""
         global room, PAUSE
-        # ------- Обновить уровень ------- #
         manager = Manager()
 
         if self.carrot.dialog:
@@ -628,10 +734,13 @@ class World:
                     if LEVEL == len(manager.base_of_levels):
                         room = Menu()
                     else:
-                        room = World(manager.load_level(manager.base_of_levels[LEVEL]))
+                        room = World(
+                            manager.load_level(manager.base_of_levels[LEVEL])
+                        )
 
         if self.carrot.dead:
-            if event.type == pygame.MOUSEBUTTONUP and 385 < event.pos[0] < 615 and 290 < event.pos[1] < 340:
+            if (event.type == pygame.MOUSEBUTTONUP
+                    and 385 < event.pos[0] < 615 and 290 < event.pos[1] < 340):
 
                 self.carrot.dead = False
 
@@ -640,7 +749,8 @@ class World:
 
                 self.sound_click.play()
 
-            elif event.type == pygame.MOUSEBUTTONUP and 385 < event.pos[0] < 615 and 365 < event.pos[1] < 414:
+            elif (event.type == pygame.MOUSEBUTTONUP
+                  and 385 < event.pos[0] < 615 and 365 < event.pos[1] < 414):
 
                 self.carrot.dead = False
 
@@ -651,17 +761,20 @@ class World:
 
         if not PAUSE and not self.carrot.dead:
 
-            if event.type == pygame.MOUSEBUTTONUP and 945 < event.pos[0] < 995 and 5 < event.pos[1] < 55:
+            if (event.type == pygame.MOUSEBUTTONUP
+                    and 945 < event.pos[0] < 995 and 5 < event.pos[1] < 55):
                 PAUSE = not PAUSE
                 self.sound_click.play()
 
         else:
 
-            if event.type == pygame.MOUSEBUTTONUP and 385 < event.pos[0] < 615 and 290 < event.pos[1] < 340:
+            if (event.type == pygame.MOUSEBUTTONUP
+                    and 385 < event.pos[0] < 615 and 290 < event.pos[1] < 340):
                 PAUSE = not PAUSE
                 self.sound_click.play()
 
-            elif event.type == pygame.MOUSEBUTTONUP and 385 < event.pos[0] < 615 and 365 < event.pos[1] < 414:
+            elif (event.type == pygame.MOUSEBUTTONUP
+                  and 385 < event.pos[0] < 615 and 365 < event.pos[1] < 414):
 
                 PAUSE = not PAUSE
                 self.sound_click.play()
@@ -673,13 +786,12 @@ class World:
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             PAUSE = not PAUSE
 
-        # ------- Обновить нужно только игрока на поле ------- #
         self.carrot.update()
 
     def draw(self):
+        """Draw the world."""
         global PAUSE
         manager = Manager()
-        # ------- Нарисовать уровень ------- #
         if not PAUSE:
             blobs_group.update()
 
@@ -688,7 +800,8 @@ class World:
         # ------- Счетчик монет ------- #
         screen.blit(self.text, (31, 0))
         screen.blit(pygame.transform.scale(self.money_img, (25, 25)), (3, 3))
-        screen.blit(pygame.transform.scale(manager.load_image('pause.png'), (50, 50)), (945, 5))
+        screen.blit(pygame.transform.scale(manager.load_image('pause.png'),
+                                           (50, 50)), (945, 5))
 
         if PAUSE:
             screen.blit(manager.load_image('pause_slide.png'), (350, 250))
@@ -740,13 +853,18 @@ class World:
                     text = self.font.render(text, True, (255, 255, 255))
                     screen.blit(text, (355, 515))
 
-            text = self.font.render('[SPACE] - continue', True, (255, 255, 255))
+            text = self.font.render('[SPACE] - continue',
+                                    True,
+                                    (255, 255, 255)
+                                    )
             screen.blit(text, (330, 15))
 
 
 class Menu:
+    """Menu window class."""
 
     def __init__(self):
+        """Object creation."""
         manager = Manager()
 
         self.image = manager.load_image('button_start.png')
@@ -758,22 +876,25 @@ class Menu:
         self.image_change = manager.load_image('button_change_lvl.png')
 
     def update(self, event):
+        """Handle event."""
         global room, LEVEL
-        # ------- Обновить меню ------- #
+
         manager = Manager()
-        # ------- Если нажали начать: ------- #
-        if event.type == pygame.MOUSEBUTTONUP and 385 < event.pos[0] < 615 and 250 < event.pos[1] < 300:
+
+        if (event.type == pygame.MOUSEBUTTONUP
+                and 385 < event.pos[0] < 615 and 250 < event.pos[1] < 300):
             room = World(manager.load_level('first_level.txt'))
             LEVEL = 0
 
             self.sound_click.play()
-        elif event.type == pygame.MOUSEBUTTONUP and 385 < event.pos[0] < 615 and 325 < event.pos[1] < 375:
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 385 < event.pos[0] < 615 and 325 < event.pos[1] < 375):
             room = ChangeLevelMenu()
             self.sound_click.play()
 
             connection = sqlite3.connect('Progress.db')
             cursor = connection.cursor()
-            query = f'''SELECT levels FROM info'''
+            query = '''SELECT levels FROM info'''
             cursor.execute(query)
             connection.commit()
             answer = cursor.fetchall()[0][0]
@@ -785,19 +906,20 @@ class Menu:
 
             connection.close()
 
-        elif event.type == pygame.MOUSEBUTTONUP and 385 < event.pos[0] < 615 and 400 < event.pos[1] < 450:
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 385 < event.pos[0] < 615 and 400 < event.pos[1] < 450):
             room = ChangeSkinMenu()
 
             self.sound_click.play()
 
-        elif event.type == pygame.MOUSEBUTTONUP and 5 < event.pos[0] < 55 and 645 < event.pos[1] < 695:
+        elif (event.type == pygame.MOUSEBUTTONUP
+              and 5 < event.pos[0] < 55 and 645 < event.pos[1] < 695):
             room = InfoMenu()
 
             self.sound_click.play()
 
     def draw(self):
-        # ------- Отрисовать меню ------- #
-
+        """Draw the menu."""
         manager = Manager()
 
         screen.blit(self.image, (385, 250))
@@ -811,8 +933,7 @@ class Menu:
 
         connection = sqlite3.connect('Progress.db')
         cursor = connection.cursor()
-        query = f'''
-        SELECT Money FROM info'''
+        query = '''SELECT Money FROM info'''
         cursor.execute(query)
         connection.commit()
 
@@ -840,26 +961,22 @@ room = Menu()
 
 
 def main():
+    """Run the main game loop."""
     global tile_size
 
     running = True
     manager = Manager()
     while running:
-        # ------- Залить фон ------- #
         screen.blit(manager.load_image('background.png'), (0, 0))
 
-        # ------- Если это какой-то уровень: ------- #
         if isinstance(room, World):
             room.carrot.update()
 
-        # ------- Нажатия ------- #
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            # ------- Обновить с event ------- #
             room.update(event)
 
-        # ------- Отрисовать: ------- #
         room.draw()
         pygame.display.update()
 
