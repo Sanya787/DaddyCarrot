@@ -247,6 +247,19 @@ class Tile(pygame.sprite.Sprite):
             tile_size * pos_x, tile_size * pos_y)
 
 
+class CarrotImg(pygame.sprite.Sprite):
+    """Tile Sprite."""
+
+    def __init__(self, pos_x, pos_y):
+        """Object creation."""
+        super().__init__(all_sprites)
+        manager = Manager()
+
+        self.image = manager.load_image('carrot_right_1.png')
+        self.image = pygame.transform.scale(self.image, player_size)
+        self.rect = self.image.get_rect().move(pos_x, pos_y)
+
+
 class Carrot(pygame.sprite.Sprite):
     """Player Sprite."""
 
@@ -261,14 +274,14 @@ class Carrot(pygame.sprite.Sprite):
         self.load_sound = manager.get_sound
         self.take_image = manager.take_image
 
-        carrot_image = self.load_image('carrot_right_1.png')
+        carrot_image = self.load_image('hitbox.png')
 
         self.sound_jump = self.load_sound('jump.wav')
         self.sound_coin = self.load_sound('coin.wav')
         self.sound_break = self.load_sound('break.wav')
         self.sound_dead = self.load_sound('dead.wav')
 
-        self.image = pygame.transform.scale(carrot_image, (50, 70))
+        self.image = pygame.transform.scale(carrot_image, (30, 70))
         self.rect = self.image.get_rect()
 
         self.dialog = False
@@ -284,10 +297,12 @@ class Carrot(pygame.sprite.Sprite):
 
         self.rect.x = x
         self.rect.y = y
+        self.image_carrot = CarrotImg(self.rect.x, self.rect.y)
 
     def draw(self):
         """Draw player."""
         screen.blit(self.image, (self.rect.x, self.rect.y))
+        screen.blit(self.image_carrot, (self.rect.x, self.rect.y))
 
     def update(self):
         """Handle event."""
@@ -300,7 +315,8 @@ class Carrot(pygame.sprite.Sprite):
             self.index += 1
             self.count_wait = 0
             self.index = self.index % 5
-            self.image = self.take_image(self.index, self.see_right)
+            self.image_carrot.image = self.take_image(
+                self.index, self.see_right)
 
         if not PAUSE and not self.dead and not self.dialog:
             delta_x = 0
@@ -352,8 +368,8 @@ class Carrot(pygame.sprite.Sprite):
                 tile = pygame.sprite.spritecollide(self, tiles_group, False)[0]
                 self.rect.x -= delta_x
 
-                if tile.rect[0] - tile_size / 2 > self.rect.x + 35:
-                    self.rect.x = tile.rect[0] - 50
+                if tile.rect[0] - tile_size / 2 > self.rect.x + 15:
+                    self.rect.x = tile.rect[0] - 30
 
                 elif tile.rect[0] - tile_size / 2 < self.rect.x + 35:
                     self.rect.x = tile.rect[0] + 25
@@ -381,6 +397,11 @@ class Carrot(pygame.sprite.Sprite):
             if self.rect.bottom > screen_height:
                 self.rect.bottom = screen_height
                 delta_y = 0
+
+            if self.see_right:
+                self.image_carrot.rect = (self.rect.x - 20, self.rect.y)
+            else:
+                self.image_carrot.rect = (self.rect.x, self.rect.y)
 
             if pygame.sprite.spritecollideany(self, finish_group):
                 self.dialog = True
