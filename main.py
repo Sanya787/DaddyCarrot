@@ -436,11 +436,11 @@ class Carrot(pygame.sprite.Sprite):
             if pygame.sprite.spritecollideany(self, dead_group):
 
                 if self.see_right:
-                    self.image = pygame.transform.scale(
+                    self.image_carrot.image = pygame.transform.scale(
                         self.load_image('dead_carrot_right.png'), player_size)
 
                 else:
-                    self.image = pygame.transform.scale(
+                    self.image_carrot.image = pygame.transform.scale(
                         self.load_image('dead_carrot.png'), player_size)
 
                 self.sound_dead.play()
