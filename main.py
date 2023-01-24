@@ -867,7 +867,6 @@ class World:
                         index += 1
                         text = self.font.render(elem, True, (255, 255, 255))
                         screen.blit(text, (355, 470 + index * 45))
-
                 else:
 
                     screen.blit(manager.load_image('dialog_2.png'), (0, 500))
@@ -1005,3 +1004,4 @@ def main():
 if __name__ == '__main__':
     main()
     pygame.quit()
+    
